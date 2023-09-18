@@ -2,5 +2,6 @@ package com.meecky.SCRAT.users.enums;
 
 public enum Roles {
     USER,
-    ADMIN
+    ADMIN,
+    SUPER_ADMIN
 }

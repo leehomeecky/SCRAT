@@ -5,6 +5,7 @@ import com.meecky.SCRAT.users.enums.Roles;
 import com.meecky.SCRAT.users.enums.SubCycle;
 import com.meecky.SCRAT.wallet.model.WalletModel;
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -18,6 +19,8 @@ import java.util.Date;
 import java.util.List;
 
 @Data
+@AllArgsConstructor
+@NoArgsConstructor
 @Builder
 @Entity
 @Table(name = "users")
