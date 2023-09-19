@@ -9,6 +9,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.DynamicInsert;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -24,6 +25,7 @@ import java.util.List;
 @Builder
 @Entity
 @Table(name = "users")
+@DynamicInsert
 public class UserModel implements UserDetails {
     @Id
     @GeneratedValue
@@ -45,13 +47,15 @@ public class UserModel implements UserDetails {
     @Enumerated(EnumType.STRING)
     private SubCycle subscriptionCycle;
     private String adminHash;
+    @Column(columnDefinition = "VARCHAR(255) DEFAULT 'USER'")
     @Enumerated(EnumType.STRING)
     private Roles roles;
     @OneToOne
     @JoinColumn(name = "wallet_id")
     private WalletModel walletId;
-    @Column(nullable = false)
+    @Column(columnDefinition="TIMESTAMP DEFAULT CURRENT_TIMESTAMP", insertable = false, updatable = false)
     private LocalDateTime createdAt;
+    @Column(columnDefinition="TIMESTAMP DEFAULT CURRENT_TIMESTAMP", insertable = false)
     private LocalDateTime updatedAt;
     private LocalDateTime deletedAt;
 

@@ -6,6 +6,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.DynamicInsert;
 
 import java.time.LocalDateTime;
 
@@ -15,21 +16,21 @@ import java.time.LocalDateTime;
 @Builder
 @Entity
 @Table(name = "wallet")
+@DynamicInsert
 public class WalletModel {
     @Id
     @GeneratedValue
     private Long id;
     @Column(nullable = false)
     private String amount;
-    @Column(name = "default_currency", columnDefinition = "VARCHAR(256) DEFAULT 'NGN'")
+    @Column(columnDefinition = "VARCHAR(256) DEFAULT 'NGN'")
     @Enumerated(EnumType.STRING)
     private Currency defaultCurrency;
     @Column(name = "account_id", unique = true)
     private String accountId;
-    @Column(name = "created_at", nullable = false)
+    @Column(columnDefinition="TIMESTAMP DEFAULT CURRENT_TIMESTAMP", insertable = false, updatable = false)
     private LocalDateTime createdAt;
-    @Column(name = "updated_at")
+    @Column(columnDefinition="TIMESTAMP DEFAULT CURRENT_TIMESTAMP", insertable = false)
     private LocalDateTime updatedAt;
-    @Column(name = "deleted_at")
     private LocalDateTime deletedAt;
 }

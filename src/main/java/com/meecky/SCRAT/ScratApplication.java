@@ -27,18 +27,23 @@ public class ScratApplication {
 	CommandLineRunner run(UserRepo userRepo, WalletRepo walletRepo, PasswordEncoder passwordEncoder){
 		return args -> {
 			if(walletRepo.findByAccountId("1234554321").isPresent()) return;
-			WalletModel wallet = new WalletModel(1l, "1000000", Currency.NGN,
-					"1234554321", LocalDateTime.now(), LocalDateTime.now(), null);
+			WalletModel wallet = new WalletModel();
+			wallet.setAmount("1000000");
+			wallet.setAccountId("1234554321");
 
 			walletRepo.save(wallet);
 
 
-			UserModel admin = new UserModel(1l, "JOHN", "SHANK",
-					"johnshank@gmail.com", passwordEncoder.encode("1234"),
-					null, null, EmailVerificationEnum.VERIFIED, SubCycle.ANNUALLY,
-					passwordEncoder.encode("SUPER_ADMIN"), Roles.SUPER_ADMIN, wallet,
-					LocalDateTime.now(), LocalDateTime.now(), null
-			);
+			UserModel admin = new UserModel();
+			admin.setFirstName("JOHN");
+			admin.setLastName("SHANK");
+			admin.setEmail("johnshank@gmail.com");
+			admin.setPassword(passwordEncoder.encode("1234"));
+			admin.setAdminHash(passwordEncoder.encode("SUPER_ADMIN"));
+			admin.setWalletId(wallet);
+			admin.setRoles(Roles.SUPER_ADMIN);
+			admin.setIsVerified(EmailVerificationEnum.VERIFIED);
+			admin.setSubscriptionCycle(SubCycle.ANNUALLY);
 
 			userRepo.save(admin);
 		};
