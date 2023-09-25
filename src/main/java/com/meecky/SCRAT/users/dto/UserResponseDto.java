@@ -10,11 +10,10 @@ import java.util.Optional;
 @AllArgsConstructor
 @Getter
 @Setter
-@Builder
 public class UserResponseDto implements ResponseDto {
     private Optional<UserResponseDataDto> data;
-    private LocalDateTime timestamp;
-    private Optional<String> message;
+    private LocalDateTime timestamp = LocalDateTime.now();
+    private Optional<String> message = Optional.empty();
     private String details;
     private int code;
 }

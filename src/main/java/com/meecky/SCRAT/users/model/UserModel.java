@@ -10,6 +10,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.DynamicInsert;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -20,7 +21,7 @@ import java.util.Date;
 import java.util.List;
 
 @Data
-@AllArgsConstructor
+@AllArgsConstructor(onConstructor = @__(@Autowired))
 @NoArgsConstructor
 @Builder
 @Entity
