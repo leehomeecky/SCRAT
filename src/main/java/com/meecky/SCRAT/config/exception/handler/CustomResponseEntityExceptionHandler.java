@@ -2,6 +2,7 @@ package com.meecky.SCRAT.config.exception.handler;
 
 import com.meecky.SCRAT.config.exception.*;
 import com.meecky.SCRAT.config.exception.dto.ExceptionDetailsDto;
+import org.hibernate.exception.ConstraintViolationException;
 import org.springframework.data.crossstore.ChangeSetPersister;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;

@@ -10,10 +10,17 @@ import com.meecky.SCRAT.users.dto.UserLoginDto;
 import com.meecky.SCRAT.users.dto.UserResponseDataDto;
 import com.meecky.SCRAT.users.model.UserModel;
 import com.meecky.SCRAT.users.repository.UserRepo;
+import jakarta.persistence.PersistenceException;
+import jakarta.validation.ConstraintViolationException;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.hibernate.NonUniqueObjectException;
+import org.hibernate.engine.jdbc.spi.SqlExceptionHelper;
+import org.hibernate.exception.DataException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataAccessException;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -45,6 +52,9 @@ public class AuthService implements AuthServiceInterface {
         userModel.setEmail(user.getEmail());
         userModel.setPassword(encodedPass);
 
+        if (userRepo.findByEmailIgnoreCase(user.getEmail()).isPresent())
+            throw new DataIntegrityViolationException("A user with email " + user.getEmail() + " already exist");
+
             UserModel newUser = userRepo.save(userModel);
             return (new UserResponseDataDto(newUser.getId(),
                     newUser.getFirstName(),
@@ -53,9 +63,9 @@ public class AuthService implements AuthServiceInterface {
                     newUser.getSubscriptionCycle(),
                     Optional.empty()));
         }
-        catch (Exception e) {
+        catch (DataIntegrityViolationException e) {
             log.error(e.getMessage());
-            throw new ConflictException("email already exist");
+            throw new ConflictException(e.getMessage());
 
         }
 
